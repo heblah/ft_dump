@@ -1,0 +1,8 @@
+
+services:
+  workspace:
+    build: .
+    volumes:
+      - /home:/home
+    container_name: workspace
+    restart: unless-stopped
