@@ -1,21 +1,22 @@
-FROM	ubuntu:22.04
+
+FROM	fedora:39 as core_base
 
 ARG		LOGIN
 ENV		USER=$LOGIN
 ENV		HOME=/home/$LOGIN
 
-RUN		apt update && apt install -y zsh \
+RUN		dnf install -y fish man-db man-pages \
 			sudo \
 			neovim \
 			git make clang gcc gdb python3 python3-pip \
 			tldr fzf
 
+
+FROM	core_base as config
 RUN		useradd $USER && \
-			gpasswd -a $USER sudo && \
-			mkdir /home/$USER && \
-			chown $USER /home/$USER
+			echo "$USER:tetrapak" | chpasswd
 
 USER	$USER
 WORKDIR	/home/$USER
 
-CMD		["/bin/zsh"]
+CMD		["/bin/fish"]
